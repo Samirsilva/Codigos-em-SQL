@@ -97,9 +97,17 @@ SELECT COUNT(A.ATOR_ID), F.TITULO
 FROM ATOR A, FILME F, FILME_ATOR FA
 WHERE A.ATOR_ID = FA.ATOR_ID
 AND F.FILME_ID = FA.FILME_ID
-GROUP BY TITULO;
+GROUP BY TITULO
+ORDER BY 1 ASC;
 
 /*17. Listar a quantidade de atores para os filmes que possuem mais de 5 atores ordenando por quantidade de atores decrescente.*/
+SELECT COUNT(A.ATOR_ID), F.TITULO
+FROM ATOR A, FILME_ATOR FA, FILME F
+WHERE A.ATOR_ID = FA.ATOR_ID
+AND F.FILME_ID =  FA.FILME_ID
+GROUP BY TITULO
+HAVING COUNT(A.ATOR_ID) > 5
+ORDER BY 1 ASC;
 
 /*18. Listar o título e a quantidade de atores para os filmes que possuem o idioma "ENGLISH" e mais de 10 atores ordenando por ordem alfabética de título e ordem crescente de quantidade de atores.*/
 
