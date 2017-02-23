@@ -121,13 +121,25 @@ HAVING COUNT(A.ATOR_ID) > 10
 ORDER BY F.TITULO ASC;
 
 /*19. Qual a maior duração da locação dentre os filmes?*/
-SELECT MAX(F.DURACAO_DA_LOCACAO) FROM FILME F;
+SELECT MAX(F.DURACAO_DA_LOCACAO) 
+FROM FILME F;
 
 /*20. Quantos filmes possuem a maior duração de locação?*/
+SELECT TITULO 
+FROM FILME 
+WHERE DURACAO_DA_LOCACAO=(SELECT MAX(F.DURACAO_DA_LOCACAO) FROM FILME F);
 
 /*21. Quantos filmes do idioma "JAPANESE" ou "GERMAN" possuem a maior duração de locação?*/
+SELECT count(F.TITULO)
+FROM FILME F, IDIOMA I
+WHERE F.DURACAO_DA_LOCACAO=(SELECT MAX(F.DURACAO_DA_LOCACAO) FROM FILME F)
+AND F.IDIOMA_ID = I.IDIOMA_ID
+AND  I.NOME = 'JAPANESE' OR I.NOME='GERMAN'; 
 
 /*22. Qual a quantidade de filmes por classificação e preço da locação?*/
+SELECT COUNT(TITULO), CLASSIFICACAO, PRECO_DA_LOCACAO 
+FROM FILME
+GROUP BY CLASSIFICACAO, PRECO_DA_LOCACAO;
 
 /*23. Qual o maior tempo de duração de filme por categoria?*/
 
