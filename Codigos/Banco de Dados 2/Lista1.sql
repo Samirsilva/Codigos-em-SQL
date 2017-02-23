@@ -179,16 +179,33 @@ AND C.CATEGORIA_ID = FC.CATEGORIA_ID
 GROUP BY C.CATEGORIA_ID, F.CLASSIFICACAO; 
 
 /*28. Qual a quantidade de filmes por Ator ordenando decrescente por quantidade?*/
+SELECT COUNT(F.TITULO), A.PRIMEIRO_NOME, A.ULTIMO_NOME
+FROM FILME F, FILME_ATOR FA, ATOR A
+WHERE F.FILME_ID = FA.FILME_ID
+AND A.ATOR_ID = FA.ATOR_ID
+GROUP BY A.ATOR_ID
+ORDER BY 1 DESC;
 
 /*29. Qual a quantidade de filmes por ano de lançamento ordenando por quantidade crescente?*/
+SELECT COUNT(F.TITULO), F.ANO_DE_LANCAMENTO
+FROM FILME F
+GROUP BY F.ANO_DE_LANCAMENTO
+ORDER BY 1 ASC;
 
 /*30. Listar os anos de lançamento que possuem mais de 400 filmes?*/
+SELECT ANO_DE_LANCAMENTO, COUNT(TITULO)
+FROM FILME
+GROUP BY ANO_DE_LANCAMENTO
+HAVING COUNT(FILME_ID) >400;
 
 /*31. Listar os anos de lançamento dos filmes que possuem mais de 100 filmes com preço da locação maior que a média do preço da locação dos filmes da categoria "Children"?*/
-
-/*32. Quais as cidades e seu pais correspondente que pertencem a um país que inicie com a Letra “E”?*/
-
-/*31. Qual a quantidade de cidades por pais em ordem decrescente?*/
+SELECT F.ANO_DE_LANCAMENTO, COUNT(F.TITULO)
+FROM FILME F, FILME_CATEGORIA FC, CATEGORIA C
+WHERE F.FILME_ID = FC.FILME_ID
+AND C.CATEGORIA_ID = FC.CATEGORIA_ID
+AND F.PRECO_DA_LOCACAO > (SELECT AVG(F.PRECO_DA_LOCACAO) FROM FILME F, FILME_CATEGORIA FC, CATEGORIA C WHERE F.FILME_ID = FC.FILME_ID AND C.CATEGORIA_ID = FC.CATEGORIA_ID AND C.NOME='CHILDREN')
+GROUP BY F.ANO_DE_LANCAMENTO
+HAVING COUNT(F.FILME_ID) > 100;
 
 /*32. Qual a quantidade de cidades que iniciam com a Letra “A” por pais em ordem crescente?*/
 
