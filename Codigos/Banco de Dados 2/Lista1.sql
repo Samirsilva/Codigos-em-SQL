@@ -207,44 +207,76 @@ AND F.PRECO_DA_LOCACAO > (SELECT AVG(F.PRECO_DA_LOCACAO) FROM FILME F, FILME_CAT
 GROUP BY F.ANO_DE_LANCAMENTO
 HAVING COUNT(F.FILME_ID) > 100;
 
-/*32. Qual a quantidade de cidades que iniciam com a Letra “A” por pais em ordem crescente?*/
+/*32. Quais as cidades e seu pais correspondente que pertencem a um país que inicie com a Letra “E”?*/
+SELECT C.CIDADE, P.PAIS 
+FROM PAIS P, CIDADE C
+WHERE P.PAIS_ID = C.PAIS_ID
+AND P.PAIS LIKE 'E%';
 
-/*33. Quais os países que possuem mais de 3 cidades que iniciam com a Letra “A”?*/
+/*33. Qual a quantidade de cidades por pais em ordem decrescente?*/
+SELECT COUNT(C.CIDADE), P.PAIS
+FROM PAIS P, CIDADE C
+WHERE P.PAIS_ID = C.PAIS_ID
+GROUP BY P.PAIS
+ORDER BY 1 DESC;
 
-/*34. Quais os países que possuem mais de 3 cidades que iniciam com a Letra “A” ou tenha "R" ordenando por quantidade crescente?*/
+/*34. Qual a quantidade de cidades que iniciam com a Letra “A” por pais em ordem crescente?*/
+SELECT COUNT(C.CIDADE), P.PAIS
+FROM PAIS P, CIDADE C
+WHERE P.PAIS_ID = C.PAIS_ID
+AND C.CIDADE LIKE 'A%'
+GROUP BY P.PAIS
+ORDER BY P.PAIS ASC;
 
-/*35. Quais os clientes moram no país “United States”?*/
+/*35. Quais os países que possuem mais de 3 cidades que iniciam com a Letra “A”?*/
+SELECT P.PAIS, COUNT(C.CIDADE)
+FROM PAIS P, CIDADE C
+WHERE P.PAIS_ID = C.PAIS_ID
+AND C.CIDADE LIKE 'A%'
+GROUP BY P.PAIS
+HAVING COUNT(C.CIDADE) >3;
 
-/*36. Quantos clientes moram no país “Brazil”?*/
+/*36. Quais os países que possuem mais de 3 cidades que iniciam com a Letra “A” ou tenha "R" ordenando por quantidade crescente?*/
+SELECT P.PAIS, COUNT(C.CIDADE)
+FROM PAIS P, CIDADE C
+WHERE P.PAIS_ID = C.PAIS_ID
+AND C.CIDADE LIKE 'A%' OR '%R%'
+GROUP BY P.PAIS
+HAVING COUNT(C.CIDADE) >3
+ORDER BY 1 ASC;
 
-/*37. Qual a quantidade de clientes por pais?*/
+/*37. Quais os clientes moram no país “United States”?*/
 
-/*38. Quais países possuem mais de 10 clientes?*/
+/*38. Quantos clientes moram no país “Brazil”?*/
 
-/*39. Qual a média de duração dos filmes por idioma?*/
+/*39. Qual a quantidade de clientes por pais?*/
 
-/*40. Qual a quantidade de atores que atuaram nos filmes do idioma “English”?*/
+/*40. Quais países possuem mais de 10 clientes?*/
 
-/*41. Quais os atores do filme “BLANKET BEVERLY”?*/
+/*41. Qual a média de duração dos filmes por idioma?*/
 
-/*42. Quais categorias possuem mais de 60 filmes cadastrados?*/
+/*42. Qual a quantidade de atores que atuaram nos filmes do idioma “English”?*/
 
-/*43. Quais os filmes alugados (sem repetição) para clientes que moram na “Argentina”?*/
+/*43. Quais os atores do filme “BLANKET BEVERLY”?*/
 
-/*44. Qual a quantidade de filmes alugados por Clientes que moram na “Chile”?*/
+/*44. Quais categorias possuem mais de 60 filmes cadastrados?*/
 
-/*45. Qual a quantidade de filmes alugados por funcionario?*/
+/*45. Quais os filmes alugados (sem repetição) para clientes que moram na “Argentina”?*/
 
-/*46. Qual a quantidade de filmes alugados por funcionario para cada categoria?*/
+/*46. Qual a quantidade de filmes alugados por Clientes que moram na “Chile”?*/
 
-/*47. Quais Filmes possuem preço da Locação maior que a média de preço da locação?*/
+/*47. Qual a quantidade de filmes alugados por funcionario?*/
 
-/*48. Qual a soma da duração dos Filmes por categoria?*/
+/*48. Qual a quantidade de filmes alugados por funcionario para cada categoria?*/
 
-/*49. Qual a quantidade de filmes locados mês a mês por ano?*/
+/*49. Quais Filmes possuem preço da Locação maior que a média de preço da locação?*/
 
-/*50. Qual o total pago por classificação de filmes alugados no ano de 2006?*/
+/*50. Qual a soma da duração dos Filmes por categoria?*/
 
-/*51. Qual a média mensal do valor pago por filmes alugados no ano de 2005?*/
+/*51. Qual a quantidade de filmes locados mês a mês por ano?*/
 
-/*52. Qual o total pago por filme alugado no mês de Junho de 2006 por cliente?*/
+/*52. Qual o total pago por classificação de filmes alugados no ano de 2006?*/
+
+/*53. Qual a média mensal do valor pago por filmes alugados no ano de 2005?*/
+
+/*54. Qual o total pago por filme alugado no mês de Junho de 2006 por cliente?*/
