@@ -110,8 +110,18 @@ HAVING COUNT(A.ATOR_ID) > 5
 ORDER BY 1 ASC;
 
 /*18. Listar o título e a quantidade de atores para os filmes que possuem o idioma "ENGLISH" e mais de 10 atores ordenando por ordem alfabética de título e ordem crescente de quantidade de atores.*/
+SELECT F.TITULO, COUNT(A.ATOR_ID)
+FROM FILME F, ATOR A, FILME_ATOR FA, IDIOMA I
+WHERE I.IDIOMA_ID = F.IDIOMA_ID
+AND F.FILME_ID = FA.FILME_ID
+AND A.ATOR_ID = FA.ATOR_ID
+AND I.NOME ='JAPANESE'
+GROUP BY F.TITULO
+HAVING COUNT(A.ATOR_ID) > 10
+ORDER BY F.TITULO ASC;
 
 /*19. Qual a maior duração da locação dentre os filmes?*/
+SELECT MAX(F.DURACAO_DA_LOCACAO) FROM FILME F;
 
 /*20. Quantos filmes possuem a maior duração de locação?*/
 
