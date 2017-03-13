@@ -1,26 +1,20 @@
 /*LISTA DE BANCO DE DADOS COM SAKILA TRADUZIDO PARA PORTUGUÊS*/
 
-
-
 /*1. Quais os países cadastrados?*/
 SELECT * FROM PAIS;
-
 
 /*2. Quantos países estão cadastrados?*/
 SELECT COUNT(*) 
 FROM PAIS;
-
 
 /*3. Quantos países que terminam com a letra "A" estão cadastrados?*/
 SELECT COUNT(*) 
 FROM PAIS 
 WHERE PAIS LIKE '%A';
 
-
 /*4. Listar, sem repetição, os anos que houveram lançamento de filme.*/
 SELECT DISTINCT ANO_DE_LANCAMENTO 
 FROM FILME;
-
 
 /*5. Alterar o ano de lançamento igual 2007 para filmes que iniciem com a Letra "B".*/
 UPDATE FILME 
@@ -28,13 +22,11 @@ SET ANO_DE_LANCAMENTO=2007
 WHERE TITULO 
 LIKE 'B%';
 
-
 /*6. Listar os filmes que possuem duração do filme maior que 100 e classificação igual a "G". */
 SELECT TITULO 
 FROM FILME 
 WHERE DURACAO_DO_FILME > 100 
 AND CLASSIFICACAO = 'G';
-
 
 /*7. Alterar o ano de lançamento igual 2008 para filmes que possuem duração da locação menor que 4 e classificação igual a "PG". */
 UPDATE FILME 
@@ -42,48 +34,40 @@ SET ANO_DE_LANCAMENTO=2008
 WHERE DURACAO_DA_LOCACAO < 4 
 AND CLASSIFICACAO='PG';
 
-
 /*8. Listar a quantidade de filmes que estejam classificados como "PG-13" e preço da locação maior que 2.40.*/
 SELECT COUNT(*) 
 FROM FILME 
 WHERE CLASSIFICACAO = 'PG-13' 
 AND PRECO_DA_LOCACAO > 2.40;
 
-
 /*9. Quais os idiomas que possuem filmes cadastrados? */
-SELECT NOME 
+SELECT DISTINCT(NOME) 
 FROM IDIOMA I, FILME F 
 WHERE I.IDIOMA_ID = F.IDIOMA_ID;
-
 
 /*10. Alterar o idioma para "GERMAN" dos filmes que possuem preço da locação maior que 4.*/
 UPDATE IDIOMA I, FILME F 
 SET I.NOME='GERMAN' 
 WHERE F.PRECO_DA_LOCACAO > 4;
 
-
 /*11. Alterar o idioma para "JAPANESE" dos filmes que possuem preço da locação igual 0.99.*/
 UPDATE IDIOMA I, FILME F 
-SET I.NOME='JAPANESE'
+SET IDIOMA_ID = (SELECT IDIOMA_ID FROM IDIOMA WHERE NOME = "JAPANESE")
 WHERE F.PRECO_DA_LOCACAO = 0.99;
-
 
 /*12. Listar a quantidade de filmes por classificação.*/
 SELECT COUNT(*), CLASSIFICACAO 
 FROM FILME 
 GROUP BY CLASSIFICACAO; 
 
-
 /*13. Listar, sem repetição, os preços de locação dos filmes cadastrados.*/
 SELECT DISTINCT PRECO_DA_LOCACAO
 FROM FILME;
-
 
 /*14. Listar a quantidade de filmes por preço da locação.*/
 SELECT COUNT(TITULO), PRECO_DA_LOCACAO 
 FROM FILME
 GROUP BY PRECO_DA_LOCACAO;
-
 
 /*15. Listar os precos da locação que possuam mais de 340 filmes.*/
 SELECT PRECO_DA_LOCACAO, COUNT(TITULO)
@@ -91,14 +75,13 @@ FROM FILME
 GROUP BY PRECO_DA_LOCACAO
 HAVING COUNT(TITULO) > 340; 
 
-
 /*16. Listar a quantidade de atores por filme ordenando por quantidade de atores crescente.*/
 SELECT COUNT(A.ATOR_ID), F.TITULO 
 FROM ATOR A, FILME F, FILME_ATOR FA
 WHERE A.ATOR_ID = FA.ATOR_ID
 AND F.FILME_ID = FA.FILME_ID
 GROUP BY TITULO
-ORDER BY 1 ASC;
+ORDER BY 2 ASC;
 
 /*17. Listar a quantidade de atores para os filmes que possuem mais de 5 atores ordenando por quantidade de atores decrescente.*/
 SELECT COUNT(A.ATOR_ID), F.TITULO
@@ -109,7 +92,7 @@ GROUP BY TITULO
 HAVING COUNT(A.ATOR_ID) > 5
 ORDER BY 1 ASC;
 
-/*18. Listar o título e a quantidade de atores para os filmes que possuem o idioma "ENGLISH" e mais de 10 atores ordenando por ordem alfabética de título e ordem crescente de quantidade de atores.*/
+/*18. Listar o título e a quantidade de atores para os filmes que possuem o idioma "JAPANESE" e mais de 10 atores ordenando por ordem alfabética de título e ordem crescente de quantidade de atores.*/
 SELECT F.TITULO, COUNT(A.ATOR_ID)
 FROM FILME F, ATOR A, FILME_ATOR FA, IDIOMA I
 WHERE I.IDIOMA_ID = F.IDIOMA_ID
@@ -125,7 +108,7 @@ SELECT MAX(F.DURACAO_DA_LOCACAO)
 FROM FILME F;
 
 /*20. Quantos filmes possuem a maior duração de locação?*/
-SELECT TITULO 
+SELECT COUNT(TITULO) 
 FROM FILME 
 WHERE DURACAO_DA_LOCACAO=(SELECT MAX(F.DURACAO_DA_LOCACAO) FROM FILME F);
 
@@ -319,21 +302,23 @@ AND CI.PAIS_ID = P.PAIS_ID
 AND P.PAIS='ARGENTINA';
 
 /*46. Qual a quantidade de filmes alugados por Clientes que moram na “Chile”?*/
-SELECT COUNT(F.TITULO), P.PAIS
+SELECT C.PRIMEIRO_NOME, COUNT(F.TITULO), P.PAIS
 FROM FILME F, INVENTARIO I, ALUGUEL A, CLIENTE C, ENDERECO E, CIDADE CI, PAIS P
 WHERE F.FILME_ID = I.FILME_ID
 AND I.INVENTARIO_ID = A.INVENTARIO_ID
 AND A.CLIENTE_ID = C.CLIENTE_ID
 AND C.ENDERECO_ID = CI.CIDADE_ID
 AND CI.PAIS_ID = P.PAIS_ID
-AND P.PAIS='CHILE';
+AND P.PAIS='CHILE'
+GROUP BY 1;
 
 /*47. Qual a quantidade de filmes alugados por funcionario?*/
-SELECT COUNT(F.TITULO)
+SELECT FUN.PRIMEIRO_NOME, COUNT(F.TITULO)
 FROM FILME F, INVENTARIO I, ALUGUEL A, FUNCIONARIO FUN
 WHERE F.FILME_ID = I.FILME_ID
 AND I.INVENTARIO_ID = A.INVENTARIO_ID
-AND A.FUNCIONARIO_ID = FUN.FUNCIONARIO_ID;
+AND A.FUNCIONARIO_ID = FUN.FUNCIONARIO_ID
+GROUP BY 1;
 
 /*48. Qual a quantidade de filmes alugados por funcionario para cada categoria?*/
 SELECT COUNT(F.TITULO), C.NOME
@@ -358,11 +343,10 @@ AND C.CATEGORIA_ID = FC.CATEGORIA_ID
 GROUP BY C.CATEGORIA_ID;
 
 /*51. Qual a quantidade de filmes locados mês a mês por ano? */
-SELECT COUNT(F.TITULO)
-FROM FILME F, INVENTARIO I, ALUGUEL A
-WHERE F.FILME_ID = I.FILME_ID
-AND I.INVENTARIO_ID = A.INVENTARIO_ID
-GROUP BY EXTRACT(YEAR_MONTH FROM A.DATA_DE_ALUGUEL);
+SELECT MONTH(DATA_DE_ALUGUEL), YEAR(DATA_DE_ALUGUEL), COUNT(F.TITULO)
+FROM ALUGUEL 
+GROUP BY MONTH(DATA_DE_ALUGUEL), YEAR(DATA_DE_ALUGUEL)
+ORDER BY MONTH(DATA_DE_ALUGUEL), YEAR(DATA_DE_ALUGUEL);
 
 /*52. Qual o total pago por classificação de filmes alugados no ano de 2006?*/
 SELECT SUM(PAG.VALOR), F.CLASSIFICACAO
@@ -374,20 +358,20 @@ AND YEAR(A.DATA_DE_ALUGUEL)= '2006'
 GROUP BY F.CLASSIFICACAO;
 
 /*53. Qual a média mensal do valor pago por filmes alugados no ano de 2005?*/
-SELECT AVG(PAG.VALOR)
+SELECT MONTH(DATA_DE_ALUGUEL), YEAR(DATA_DE_ALUGUEL), AVG(PAG.VALOR)
 FROM FILME F, INVENTARIO I, ALUGUEL A, PAGAMENTO PAG
 WHERE F.FILME_ID = I.FILME_ID
 AND I.INVENTARIO_ID = A.INVENTARIO_ID
 AND A.ALUGUEL_ID = PAG.ALUGUEL_ID
-AND YEAR(A.DATA_DE_ALUGUEL)= '2005'
-GROUP BY MONTH(A.DATA_DE_ALUGUEL);
+AND YEAR(A.DATA_DE_ALUGUEL)= 2005
+GROUP BY 2, 1);
 
 /*54. Qual o total pago por filme alugado no mês de Junho de 2006 por cliente? -----    CORRIGIR  */*/
-SELECT SUM(PAG.VALOR)
+SELECT C.PRIMEIRO_NOME, SUM(PAG.VALOR)
 FROM FILME F, INVENTARIO I, ALUGUEL A, PAGAMENTO PAG, CLIENTE C
 WHERE F.FILME_ID = I.FILME_ID
 AND I.INVENTARIO_ID = A.INVENTARIO_ID
 AND A.ALUGUEL_ID = PAG.ALUGUEL_ID
 AND PAG.CLIENTE_ID = C.CLIENTE_ID
-AND YEAR(A.DATA_DE_ALUGUEL)= '2006'
-GROUP BY C.CLIENTE_ID;
+AND YEAR(A.DATA_DE_ALUGUEL)= 2006
+GROUP BY 1;
